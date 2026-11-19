@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f6fa">
+  <title>Nexo · Solicitudes y cotizaciones</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Ir al contenido</a>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#resumen" aria-label="Nexo Studio, resumen">
+        <span class="logo"><i data-icon="logo"></i></span>
+        <span><strong>nexo<span>.</span></strong><small>STUDIO</small></span>
+      </a>
+      <nav aria-label="Navegación principal">
+        <p>ESPACIO DE TRABAJO</p>
+        <a href="#resumen" data-route="resumen"><i data-icon="grid"></i> Resumen</a>
+        <a href="#solicitudes" data-route="solicitudes"><i data-icon="inbox"></i> Solicitudes</a>
+        <a href="#servicios" data-route="servicios"><i data-icon="globe"></i> Portal de servicios <i class="external" data-icon="external"></i></a>
+      </nav>
+      <div class="sidebar-footer"><span class="demo-mark"><i data-icon="flask"></i></span><span><strong>Entorno demo</strong><small>Datos ficticios</small></span></div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar"><span class="crumb">Nexo Studio <i data-icon="chevron"></i> <strong id="crumb">Resumen</strong></span><span class="demo-label"><span></span> Demo interactiva</span></header>
+      <main id="main" tabindex="-1">
+        <section id="summary-view" aria-label="Resumen">
+          <header class="page-header">
+            <div><h1>Resumen comercial</h1><p>Da seguimiento a tus solicitudes y cotizaciones en un solo lugar.</p></div>
+            <button class="primary" data-open><i data-icon="add"></i> Nueva solicitud</button>
+          </header>
+          <section class="hero" aria-label="Cómo funciona la demo">
+            <div class="hero-content">
+              <span class="hero-kicker"><i data-icon="spark"></i> RECORRIDO DE DEMOSTRACIÓN</span>
+              <h2>De solicitud a cotización</h2>
+              <p>Crea una solicitud de prueba, cambia su estado y sigue su avance en el tablero.</p>
+              <a href="#servicios">Explorar el portal <i data-icon="arrow"></i></a>
+            </div>
+            <div class="hero-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </section>
+        </section>
+
+        <section id="requests-intro" class="page-header" hidden>
+          <div><h1>Solicitudes</h1><p>Consulta el historial y actualiza el estado de cada oportunidad.</p></div>
+          <button class="primary" data-open><i data-icon="add"></i> Nueva solicitud</button>
+        </section>
+
+        <section id="dashboard">
+          <div class="filterbar">
+            <div><h2 id="dashboard-heading">Indicadores</h2><p id="filter-caption">Actividad del periodo seleccionado</p></div>
+            <div class="filters" aria-label="Filtros del panel">
+              <label><span class="sr-only">Periodo</span><select id="period"><option value="7">Últimos 7 días</option><option value="30" selected>Últimos 30 días</option><option value="90">Últimos 90 días</option></select></label>
+              <label><span class="sr-only">Servicio</span><select id="service"><option value="all">Todos los servicios</option></select></label>
+              <label><span class="sr-only">Estado</span><select id="status"><option value="all">Todos los estados</option></select></label>
+            </div>
+          </div>
+          <p class="load-status" id="load-status" aria-live="polite"></p>
+          <div id="analytics">
+            <div class="metrics" id="metrics"></div>
+            <div class="charts">
+              <article class="card chart"><h3>Actividad de solicitudes</h3><p>Solicitudes recibidas por intervalo</p><div id="trend"></div></article>
+              <article class="card chart"><h3>Solicitudes por servicio</h3><p>Distribución del periodo seleccionado</p><div id="breakdown"></div></article>
+            </div>
+          </div>
+          <article class="card pipeline">
+            <header><div><h3 id="table-heading">Solicitudes recientes</h3><p id="table-caption"></p></div><a href="#solicitudes" class="quiet" id="all-link">Ver todas <i data-icon="arrow"></i></a></header>
+            <div class="table-wrap">
+              <table><thead><tr><th scope="col">Proyecto</th><th scope="col">Servicio</th><th scope="col">Fecha</th><th scope="col">Estado <span class="sr-only">editable</span></th></tr></thead><tbody id="request-rows"></tbody></table>
+            </div>
+          </article>
+        </section>
+
+        <section id="portal-view" hidden>
+          <header class="page-header"><div><h1>Portal de servicios</h1><p>Elige un servicio de Nexo Studio para enviar una solicitud de prueba.</p></div></header>
+          <section class="hero portal-hero"><div class="hero-content"><span class="hero-kicker">NEXO STUDIO</span><h2>Diseño y datos para tu próximo proyecto</h2><p>Cuéntanos qué tipo de servicio buscas y registra tu solicitud.</p><button class="hero-button" data-open>Solicitar cotización <i data-icon="arrow"></i></button></div><div class="hero-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></section>
+          <h2 class="services-heading">Nuestros servicios</h2>
+          <div id="services-grid" class="services-grid"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="request-dialog" aria-labelledby="dialog-title">
+    <form id="request-form">
+      <div class="dialog-top"><span class="dialog-mark"><i data-icon="inbox"></i></span><button type="button" class="close" aria-label="Cerrar" id="close-dialog"><i data-icon="close"></i></button></div>
+      <h2 id="dialog-title">Nueva solicitud</h2>
+      <p>Elige un servicio y un proyecto ficticio para probar el flujo.</p>
+      <label>Servicio <select id="request-service" name="service" required><option value="">Seleccionar servicio</option></select></label>
+      <label>Proyecto de ejemplo <select id="project" name="project" required><option value="">Seleccionar proyecto</option></select></label>
+      <p id="form-error" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="quiet" id="cancel-dialog">Cancelar</button><button class="primary" id="submit-request">Guardar solicitud <i data-icon="arrow"></i></button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
